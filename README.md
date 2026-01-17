@@ -58,7 +58,7 @@ Built with the latest 2026 web standards:
 
 ## ⚖️ Legal & Disclaimer
 
-**License**: [MIT](LICENSE) © 2026 Kono.
+**License**: [MIT](LICENSE) © 2026 ilkobar.
 
 **Disclaimer**: 
 This software is provided "as is", without warranty of any kind. VibeCapsule is a client-side tool that interacts with third-party AI services.
@@ -68,4 +68,4 @@ This software is provided "as is", without warranty of any kind. VibeCapsule is 
 
 ---
 
-*Crafted with ❤️ by Kono*
+*Crafted with ❤️ by ilkobar*
