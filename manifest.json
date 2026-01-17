@@ -1,0 +1,46 @@
+{
+    "manifest_version": 3,
+    "name": "VibeCapsule",
+    "version": "1.0.0",
+    "description": "Distill web content into actionable summaries with LLMs.",
+    "permissions": [
+        "sidePanel",
+        "activeTab",
+        "storage",
+        "scripting",
+        "declarativeContent"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_title": "Click to open VibeCapsule side panel"
+    },
+    "background": {
+        "service_worker": "src/background.ts",
+        "type": "module"
+    },
+    "side_panel": {
+        "default_path": "sidepanel.html"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "assets/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "src/content/index.tsx"
+            ]
+        }
+    ]
+}

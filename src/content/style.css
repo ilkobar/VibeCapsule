@@ -1,0 +1,9 @@
+/* Basic reset for the shadow root */
+:host {
+    all: initial;
+    z-index: 999999;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'Inter', system-ui, sans-serif;
+}
