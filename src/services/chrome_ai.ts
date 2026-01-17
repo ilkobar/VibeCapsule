@@ -7,20 +7,29 @@ export class ChromeAIService implements LLMService {
         return true; // No key needed
     }
 
-    async getModels(_apiKey?: string): Promise<string[]> {
-        // Check if window.ai is available
-        if (!(self as any).ai?.languageModel) {
-            return [];
+    async getAvailability(): Promise<'AVAILABLE' | 'API_MISSING' | 'MODEL_NOT_READY'> {
+        const ai = (self as any).ai || (window as any).ai;
+        if (!ai?.languageModel) {
+            console.log("Chrome AI: languageModel API is missing");
+            return 'API_MISSING';
         }
 
         try {
-            const capabilities = await (self as any).ai.languageModel.capabilities();
-            if (capabilities.available === 'no') return [];
-            return ['gemini-nano'];
+            const capabilities = await ai.languageModel.capabilities();
+            if (capabilities.available === 'no') {
+                console.log("Chrome AI: capabilities.available is 'no'");
+                return 'MODEL_NOT_READY';
+            }
+            return 'AVAILABLE';
         } catch (e) {
             console.error("Chrome AI capability check failed", e);
-            return [];
+            return 'API_MISSING'; // If check fails, assume API is broken/missing
         }
+    }
+
+    async getModels(_apiKey?: string): Promise<string[]> {
+        const status = await this.getAvailability();
+        return status === 'AVAILABLE' ? ['gemini-nano'] : [];
     }
 
     async *summarize(content: string, options: SummaryOptions): AsyncGenerator<string> {

@@ -61,7 +61,8 @@ function App() {
   const [currentTabUrl, setCurrentTabUrl] = useState<string>('');
 
   // Chrome AI State
-  const [isChromeAIAvailable, setIsChromeAIAvailable] = useState<boolean>(false);
+  const [chromeAIStatus, setChromeAIStatus] = useState<'AVAILABLE' | 'API_MISSING' | 'MODEL_NOT_READY'>('API_MISSING');
+  const isChromeAIAvailable = chromeAIStatus === 'AVAILABLE';
 
   // Debounce timers
   const openaiTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -84,16 +85,15 @@ function App() {
   }, []);
 
   const checkChromeAI = async () => {
-    const models = await ChromeAI.getModels();
-    if (models.length > 0) {
-      setIsChromeAIAvailable(true);
+    const status = await ChromeAI.getAvailability();
+    setChromeAIStatus(status);
+
+    if (status === 'AVAILABLE') {
       // Auto-enable if no other keys are set and provider is not set to a valid one
       if (!openaiKey && !anthropicKey && !geminiKey && selectedProvider === 'openai') {
         setProvider('chrome');
-        setModel(models[0]);
+        setModel('gemini-nano');
       }
-    } else {
-      setIsChromeAIAvailable(false);
     }
   };
 
@@ -373,13 +373,50 @@ function App() {
             <CardContent>
               <div className="space-y-2">
                 <div className="text-sm text-muted-foreground flex justify-between items-center">
-                  <span>Status: {isChromeAIAvailable ? <span className="text-green-500 font-bold">Available</span> : <span className="text-yellow-500 font-bold">Not Enabled</span>}</span>
-                  {isChromeAIAvailable && selectedProvider !== 'chrome' && (
+                  <div className="flex flex-col">
+                    <span>Status: {chromeAIStatus === 'AVAILABLE' ? <span className="text-green-500 font-bold">Available</span> :
+                      chromeAIStatus === 'MODEL_NOT_READY' ? <span className="text-orange-500 font-bold flex items-center gap-1"><span className="animate-pulse">●</span> Downloading Model...</span> :
+                        <span className="text-yellow-500 font-bold">Not Enabled</span>}</span>
+                  </div>
+                  {chromeAIStatus === 'AVAILABLE' && selectedProvider !== 'chrome' && (
                     <Button size="sm" onClick={() => { setProvider('chrome'); setModel('gemini-nano'); }}>Enable (Free)</Button>
                   )}
                 </div>
-                {!isChromeAIAvailable && (
-                  <div className="bg-yellow-500/10 p-2 rounded text-xs text-yellow-600 space-y-2">
+
+                {/* Model Downloading State */}
+                {chromeAIStatus === 'MODEL_NOT_READY' && (
+                  <div className="bg-orange-500/10 p-2 rounded text-xs text-orange-600 space-y-2 mt-2">
+                    <p className="font-semibold">Chrome is downloading the AI model (Gemini Nano).</p>
+                    <p>This may take a few minutes.</p>
+                    <div className="space-y-1 pt-1">
+                      <p>To check progress:</p>
+                      <div className="flex items-center justify-between gap-2 bg-orange-500/10 p-1.5 rounded">
+                        <code className="break-all select-all">chrome://components</code>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-5 w-5 hover:bg-orange-500/20 shrink-0"
+                          onClick={() => navigator.clipboard.writeText('chrome://components')}
+                          title="Copy URL"
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <p className="text-[10px]">Find <b>Optimization Guide On Device Model</b> and click "Check for update".</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* API Missing State */}
+                {chromeAIStatus === 'API_MISSING' && (
+                  <div className="bg-yellow-500/10 p-2 rounded text-xs text-yellow-600 space-y-2 mt-2">
+                    <div className="p-2 border border-yellow-500/30 rounded bg-background flex items-start gap-2 mb-2">
+                      <AlertCircle className="h-4 w-4 text-yellow-600 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="font-bold">Latest Chrome is required!</p>
+                        <p>Please update Chrome to the latest version (Canary or Dev recommended).</p>
+                      </div>
+                    </div>
                     <p className="font-semibold">To enable (Chrome Canary/Dev only):</p>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
