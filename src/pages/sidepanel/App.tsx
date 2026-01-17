@@ -410,14 +410,14 @@ function App() {
                 {/* API Missing State */}
                 {chromeAIStatus === 'API_MISSING' && (
                   <div className="bg-yellow-500/10 p-2 rounded text-xs text-yellow-600 space-y-2 mt-2">
-                    <div className="p-2 border border-yellow-500/30 rounded bg-background flex items-start gap-2 mb-2">
-                      <AlertCircle className="h-4 w-4 text-yellow-600 shrink-0 mt-0.5" />
+                    <div className="p-2 border border-red-500/20 rounded bg-red-500/5 flex items-start gap-2 mb-2">
+                      <AlertCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
                       <div className="space-y-1">
-                        <p className="font-bold">Latest Chrome is required!</p>
-                        <p>Please update Chrome to the latest version (Canary or Dev recommended).</p>
+                        <p className="font-bold text-red-700">Chrome Canary or Dev required!</p>
+                        <p className="text-red-600/80">Built-in AI is currently experimental and not available in standard Chrome.</p>
                       </div>
                     </div>
-                    <p className="font-semibold">To enable (Chrome Canary/Dev only):</p>
+                    <p className="font-semibold px-1">How to enable (in Canary/Dev):</p>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
                         <code className="break-all select-all">chrome://flags/#optimization-guide-on-device-model</code>
