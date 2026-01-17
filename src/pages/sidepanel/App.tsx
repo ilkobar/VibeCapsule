@@ -641,12 +641,20 @@ function App() {
       </header>
 
       <div className="p-3 border-b border-border/40 bg-muted/10 shrink-0 flex gap-2">
-        <Select value={selectedProvider} onValueChange={(v: string) => { setProvider(v); }}>
+        <Select value={selectedProvider} onValueChange={(v: string) => {
+          if (v === 'chrome' && !isChromeAIAvailable) {
+            // If Chrome AI is selected but not available, go to settings for instructions
+            setProvider(v);
+            setView('settings');
+            return;
+          }
+          setProvider(v);
+        }}>
           <SelectTrigger className="w-[120px] h-8 text-xs">
             <SelectValue placeholder="Provider" />
           </SelectTrigger>
           <SelectContent>
-            {isChromeAIAvailable && <SelectItem value="chrome">Chrome AI (Free)</SelectItem>}
+            <SelectItem value="chrome" className="text-green-600 font-medium">Chrome AI (Free)</SelectItem>
             <SelectItem value="openai">OpenAI</SelectItem>
             <SelectItem value="anthropic">Anthropic</SelectItem>
             <SelectItem value="gemini">Gemini</SelectItem>
