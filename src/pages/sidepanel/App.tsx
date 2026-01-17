@@ -366,7 +366,7 @@ function App() {
           <Card className={selectedProvider === 'chrome' ? 'border-indigo-500 bg-indigo-500/5' : ''}>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
-                <span className="flex items-center gap-2"><Bot className="h-5 w-5" /> Chrome Built-in AI</span>
+                <span className="flex items-center gap-2"><Bot className="h-5 w-5" /> Chrome Built-in AI <span className="text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full ml-1">Free</span></span>
                 {selectedProvider === 'chrome' && <CheckCircle2 className="h-5 w-5 text-indigo-500" />}
               </CardTitle>
             </CardHeader>
@@ -375,7 +375,7 @@ function App() {
                 <div className="text-sm text-muted-foreground flex justify-between items-center">
                   <span>Status: {isChromeAIAvailable ? <span className="text-green-500 font-bold">Available</span> : <span className="text-yellow-500 font-bold">Not Enabled</span>}</span>
                   {isChromeAIAvailable && selectedProvider !== 'chrome' && (
-                    <Button size="sm" onClick={() => { setProvider('chrome'); setModel('gemini-nano'); }}>Enable</Button>
+                    <Button size="sm" onClick={() => { setProvider('chrome'); setModel('gemini-nano'); }}>Enable (Free)</Button>
                   )}
                 </div>
                 {!isChromeAIAvailable && (
@@ -383,7 +383,7 @@ function App() {
                     <p className="font-semibold">To enable (Chrome Canary/Dev only):</p>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
-                        <code className="truncate max-w-[200px]">chrome://flags/#optimization-guide-on-device-model</code>
+                        <code className="break-all select-all">chrome://flags/#optimization-guide-on-device-model</code>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -401,7 +401,7 @@ function App() {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
-                        <code className="truncate max-w-[200px]">chrome://flags/#prompt-api-for-gemini-nano</code>
+                        <code className="break-all select-all">chrome://flags/#prompt-api-for-gemini-nano</code>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -646,7 +646,7 @@ function App() {
             <SelectValue placeholder="Provider" />
           </SelectTrigger>
           <SelectContent>
-            {isChromeAIAvailable && <SelectItem value="chrome">Chrome AI</SelectItem>}
+            {isChromeAIAvailable && <SelectItem value="chrome">Chrome AI (Free)</SelectItem>}
             <SelectItem value="openai">OpenAI</SelectItem>
             <SelectItem value="anthropic">Anthropic</SelectItem>
             <SelectItem value="gemini">Gemini</SelectItem>
