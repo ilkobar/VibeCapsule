@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Settings, Sparkles, AlertCircle, Wand2, RefreshCw, ExternalLink, Bookmark, CheckCircle2, BookOpen, Trash2, Calendar, ArrowRight, Bot } from "lucide-react"
+import { Settings, Sparkles, AlertCircle, Wand2, RefreshCw, ExternalLink, Bookmark, CheckCircle2, BookOpen, Trash2, Calendar, ArrowRight, Bot, Copy } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import ReactMarkdown from 'react-markdown'
 import { useStorage } from "@/hooks/useStorage"
@@ -379,9 +379,45 @@ function App() {
                   )}
                 </div>
                 {!isChromeAIAvailable && (
-                  <div className="bg-yellow-500/10 p-2 rounded text-xs text-yellow-600 space-y-1">
-                    <p>Requires Chrome Canary/Dev (v127+).</p>
-                    <p>Top enable: <code>chrome://flags/#optimization-guide-on-device-model</code></p>
+                  <div className="bg-yellow-500/10 p-2 rounded text-xs text-yellow-600 space-y-2">
+                    <p className="font-semibold">To enable (Chrome Canary/Dev only):</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
+                        <code className="truncate max-w-[200px]">chrome://flags/#optimization-guide-on-device-model</code>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-5 w-5 hover:bg-yellow-500/20"
+                          onClick={() => {
+                            navigator.clipboard.writeText('chrome://flags/#optimization-guide-on-device-model');
+                          }}
+                          title="Copy URL"
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <p className="text-[10px] pl-1">Set to <b>Enabled BypassPerfRequirement</b></p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between gap-2 bg-yellow-500/10 p-1.5 rounded">
+                        <code className="truncate max-w-[200px]">chrome://flags/#prompt-api-for-gemini-nano</code>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-5 w-5 hover:bg-yellow-500/20"
+                          onClick={() => {
+                            navigator.clipboard.writeText('chrome://flags/#prompt-api-for-gemini-nano');
+                          }}
+                          title="Copy URL"
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <p className="text-[10px] pl-1">Set to <b>Enabled</b></p>
+                    </div>
+
+                    <p className="font-semibold pt-1">Then click "Relaunch" at the bottom.</p>
                   </div>
                 )}
               </div>
